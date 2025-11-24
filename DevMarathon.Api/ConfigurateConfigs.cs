@@ -10,11 +10,21 @@ public class Configuration
     {
         var configs = new Configs();
 
+        // خواندن تنظیمات از secret storage
+        configuration.GetSection("Configs").Bind(configs);
+
+
+        return configs;
+    }
+
+    public static Configs ConfigureConfigs1(IConfiguration configuration, bool isDevelopment)
+    {
+        var configs = new Configs();
+
         if (isDevelopment)
         {
             // خواندن تنظیمات از secret storage
             configuration.GetSection("Configs").Bind(configs);
-            
         }
         else
         {
