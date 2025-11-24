@@ -32,7 +32,7 @@ jobs:
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ~/marathon_api_src
             docker build -t marathon-api .
-            docker stop marathon-api || true
-            docker rm marathon-api || true
-            docker run -d -p 127.0.0.1:9090:80 --restart unless-stopped --network docker_network --name  marathon-api-container marathon-api
+            docker stop marathon-api-container || true
+            docker rm marathon-api-container || true
+            docker run -d -p 127.0.0.1:9070:80 --restart unless-stopped --network docker_network --name  marathon-api-container marathon-api
           EOF
