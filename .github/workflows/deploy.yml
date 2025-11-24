@@ -1,1 +1,38 @@
 
+name: Build and Deploy to Private Server
+
+on:
+  push:
+    branches:
+      - release1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Transfer files via rsync
+        run: |
+          rsync -avz --exclude-from='exclude.txt' --delete-after  ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/marathon_api_src
+
+      - name: Build and run Docker container on server
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            cd ~/marathon_api_src
+            docker build -t marathon-api .
+            docker stop marathon-api || true
+            docker rm marathon-api || true
+            docker run -d -p 127.0.0.1:9090:80 --restart unless-stopped --network docker_network --name marathon-api marathon-api-container
+          EOF
