@@ -34,9 +34,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterV
 
         var token = IdentityUtility.GenerateToken(new TokenParams
         {
-            UserId = Guid.NewGuid().ToString(),
+            UserId = user.Id.ToString(),
             TokenId = Guid.NewGuid().ToString(),
-            ExpireTime = TimeSpan.FromMinutes(2),
+            ExpireTime = TimeSpan.FromMinutes(10),
             Roles = new List<string> { "TEMP_REGISTER_TOKEN" },
             OtherClaims = new List<KeyValuePair<string, string>>
             {
@@ -45,10 +45,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterV
         }, _configs.TokenConfigs);
 
         var activationCode = new Random().Next(100000, 999999).ToString();
-        await _cachingService.Add($"ActivationCode_{user.Id}", activationCode, TimeSpan.FromMinutes(2));
+        await _cachingService.Add($"ActivationCode_{user.Id}", activationCode, TimeSpan.FromMinutes(10));
 
         return new RegisterVm()
         {
+            Code=activationCode,
             Token = token
         };
     }
@@ -62,4 +63,5 @@ public class RegisterCommand : IRequest<RegisterVm>
 public class RegisterVm
 {
     public string Token { set; get; }
+    public string Code { get; set; }
 }

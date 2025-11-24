@@ -1,0 +1,15 @@
+
+dotnet ef migrations add InitialMigration \
+    --project DevMarathon.Infrastructure \
+    --startup-project DevMarathon.Api \
+    --context CleanContext
+
+dotnet ef database update \
+    --project DevMarathon.Infrastructure \
+    --startup-project DevMarathon.Api \
+    --context CleanContext
+
+dotnet ef migrations remove \
+    --project DevMarathon.Infrastructure \
+    --startup-project DevMarathon.Api \
+    --context CleanContext

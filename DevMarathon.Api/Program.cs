@@ -20,7 +20,8 @@ bool isDevelopment = builder.Environment.IsDevelopment();
 
 var configs = Configuration.ConfigureConfigs(builder.Configuration, isDevelopment);
 builder.Services.AddSingleton(configs);
-
+builder.Configuration.AddUserSecrets<Program>();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddControllers(o =>
 {

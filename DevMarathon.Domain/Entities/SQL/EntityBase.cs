@@ -7,7 +7,7 @@ namespace DevMarathon.Domain.Entities.SQL;
 public class EntityBase
 {
     [Column("id")]
-    public long Id { set; get; }
+    public Guid Id { set; get; }
     [Column("created_at")]
     public DateTime CreatedAt { set; get; }
     [Column("jalali_created_at")]

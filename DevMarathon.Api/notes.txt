@@ -1,0 +1,1 @@
+sudo xed ~/.microsoft/usersecrets/1c63efbd-c5d6-4df1-aaa7-9e0c67938184/secrets.json

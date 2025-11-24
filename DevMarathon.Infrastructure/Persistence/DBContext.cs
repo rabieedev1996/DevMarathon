@@ -11,7 +11,6 @@ namespace DevMarathon.Infrastructure.Persistence;
 public class CleanContext:DbContext
 {
     public CleanContext(DbContextOptions<CleanContext> options):base(options) {  }
-    public DbSet<SQLSampleEntity> Sample { get; set; }
     public DbSet<UserEntity> Users { get; set; }
     
     

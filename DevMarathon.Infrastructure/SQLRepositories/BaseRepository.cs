@@ -14,10 +14,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : EntityBase
     public readonly CleanContext _dbContext;
 
     //// PostgreSql Connection
-    //protected readonly NpgsqlConnection _dapperConnection;
+    protected readonly NpgsqlConnection _dapperConnection;
 
     //// SqlServer Connection
-    protected readonly SqlConnection _dapperConnection;
+    //protected readonly SqlConnection _dapperConnection;
 
     public BaseRepository(CleanContext dbContext, DapperContext dapperContext)
     {

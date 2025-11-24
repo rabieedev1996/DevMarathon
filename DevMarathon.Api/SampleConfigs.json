@@ -41,7 +41,7 @@
             "Audience": ""
         },
         "RedisConfigs": {
-            "Endpoint": ""
+            "Endpoint": "45.149.77.10:6380"
         },
         "MailZilaToken": "test_mailzila_token",
         "OSTYPE": "Linux"

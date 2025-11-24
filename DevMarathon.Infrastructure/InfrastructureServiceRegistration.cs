@@ -20,18 +20,19 @@ public static class InfrastructureServiceRegistration
         ConfigurationManager configurationManager,Configs configs)
     {
         //PostgreSql
-       /* services.AddEntityFrameworkNpgsql().AddDbContext<CleanContext>(opt =>
-            opt.UseNpgsql(configurationManager.GetConnectionString("CleanPostgresDB")));*/
+        services.AddEntityFrameworkNpgsql().AddDbContext<CleanContext>(opt =>
+            opt.UseNpgsql(configurationManager.GetConnectionString("CleanPostgresDB")));
 
         //Sql Server
+        /*
         services.AddDbContext<CleanContext>(options => options.UseSqlServer(configurationManager.GetConnectionString("CleanSqlServer")));
+        */
 
         services.AddScoped(typeof(IEmailService), typeof(EmailService));
         services.AddScoped(typeof(ISmsService), typeof(SmsService));
         services.AddScoped(typeof(IReportService), typeof(ReportService));
         services.AddScoped(typeof(ILogService), typeof(LogService));
         services.AddScoped(typeof(ICachingService), typeof(CachingService));
-        services.AddScoped(typeof(ISqlSampleEntityRepository), typeof(SqlSampleEntityRepository));
         services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
         services.AddTransient<IFileService>(s => new FileService(configs));
         services.AddTransient<IImageService>(s => new ImageService(configs));

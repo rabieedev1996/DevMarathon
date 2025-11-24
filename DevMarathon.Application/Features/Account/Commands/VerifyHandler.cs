@@ -29,7 +29,7 @@ public class VerifyCommandHandler : IRequestHandler<VerifyCommand, VerifyVm>
 
     public async Task<VerifyVm> Handle(VerifyCommand request, CancellationToken cancellationToken)
     {
-        var user = _userRepository.GetById(_userContext.UserId);
+        var user = _userRepository.GetById(Guid.Parse(_userContext.UserId));
         var activeCode = await _cachingService.Get<string>($"ActivationCode_{user.Id}");
         if (string.IsNullOrEmpty(activeCode))
         {
