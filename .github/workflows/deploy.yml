@@ -34,5 +34,5 @@ jobs:
             docker build -t marathon-api .
             docker stop marathon-api || true
             docker rm marathon-api || true
-            docker run -d -p 127.0.0.1:9090:80 --restart unless-stopped --network docker_network --name marathon-api marathon-api-container
+            docker run -d -p 127.0.0.1:9090:80 --restart unless-stopped --network docker_network --name  marathon-api-container marathon-api
           EOF
