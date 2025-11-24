@@ -18,6 +18,7 @@ namespace DevMarathon.Infrastructure.ServiceImpls.MessagingImpl
                 case MessageCodes.MESSAGE_REQUIRED_PARAM: return "Required Field Is Empety.";
                 case MessageCodes.STATUS_VALIDATION_ERROR: return "Entered Data Is Not Valid.";
                 case MessageCodes.STATUS_INVALID_ACTIVATION_CODE: return "Activation code is invalid.";
+                case MessageCodes.MESSAGE_INVALID_PHONE: return "Phone number is invalid.";
 
                 default: return "Unknown Status";
             }

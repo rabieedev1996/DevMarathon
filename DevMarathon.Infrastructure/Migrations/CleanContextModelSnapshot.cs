@@ -57,7 +57,8 @@ namespace Clean.Infrastructure.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)")
                         .HasColumnName("phone_number");
 
                     b.Property<bool>("Verified")

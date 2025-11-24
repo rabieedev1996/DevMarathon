@@ -18,6 +18,7 @@ namespace DevMarathon.Infrastructure.ServiceImpls.MessagingImpl
                 case MessageCodes.MESSAGE_REQUIRED_PARAM: return "فیلد اجباری وارد نشده است."; break;
                 case MessageCodes.STATUS_VALIDATION_ERROR: return "داده های ورودی صحیح نیست."; break;
                 case MessageCodes.STATUS_INVALID_ACTIVATION_CODE: return "کد فعالسازی نامعتبر است."; break;
+                case MessageCodes.MESSAGE_INVALID_PHONE: return "شماره همراه وارد شده نامعتبر است."; break;
                 default: return "وضعیت نامشخص";
             }
         }

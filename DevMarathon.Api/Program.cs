@@ -57,8 +57,45 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
         options => builder.Configuration.Bind("CookieSettings", options));
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, _, _) =>
+    {
+        // تعریف Security Scheme برای Bearer
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
 
+        document.Components.SecuritySchemes["BearerAuth"] = new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
+        };
+
+        // برای اینکه این امنیت به‌صورت global (برای همه‌ی متدها) اعمال بشود:
+        document.SecurityRequirements ??= new List<OpenApiSecurityRequirement>();
+        var requirement = new OpenApiSecurityRequirement
+        {
+            [document.Components.SecuritySchemes["BearerAuth"]] = new List<string>()
+        };
+        document.SecurityRequirements.Add(requirement);
+
+        // اگر خواستی برای هر operation هم explicit اضافه کنی:
+        foreach (var path in document.Paths.Values)
+        {
+            foreach (var op in path.Operations.Values)
+            {
+                op.Security ??= new List<OpenApiSecurityRequirement>();
+                op.Security.Add(requirement);
+            }
+        }
+
+        return Task.CompletedTask;
+    });
+});
 
 var app = builder.Build();
 app.MapControllers();

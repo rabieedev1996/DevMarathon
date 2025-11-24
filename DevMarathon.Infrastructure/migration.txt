@@ -1,5 +1,5 @@
 
-dotnet ef migrations add InitialMigration \
+dotnet ef migrations add user_attributes \
     --project DevMarathon.Infrastructure \
     --startup-project DevMarathon.Api \
     --context CleanContext

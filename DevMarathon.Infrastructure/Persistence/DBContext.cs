@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using DevMarathon.Domain.Entities.Mongo;
 using DevMarathon.Domain.Entities.SQL;
+using DevMarathon.Infrastructure.EntityConfigurations;
 using DevMarathon.Infrastructure.SQLRepositories;
 using DevMarathon.Utility;
 using Microsoft.EntityFrameworkCore;
@@ -35,5 +36,9 @@ public class CleanContext:DbContext
             }
         }
         return base.SaveChangesAsync(cancellationToken);
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
 }

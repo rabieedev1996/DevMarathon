@@ -3,6 +3,9 @@ using DevMarathon.Domain.Entities.SQL;
 using DevMarathon.Identity;
 using DevMarathon.Application.Contract.Services;
 using DevMarathon.Application.Contract.SQLDB;
+using DevMarathon.Application.Features.Sample.SampleService;
+using DevMarathon.Domain.Enums;
+using FluentValidation;
 using MediatR;
 
 namespace DevMarathon.Application.Features.Account.Commands;
@@ -54,7 +57,22 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterV
         };
     }
 }
+public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+{
+    IMessageService _messageService;
 
+    public RegisterCommandValidator(IMessageService messageService)
+    {
+        _messageService = messageService;
+        RuleFor(p => p.PhoneNumber)
+            .NotNull().WithMessage(_messageService.GetMessage(MessageCodes.MESSAGE_REQUIRED_PARAM, Langs.FA));
+        RuleFor(p => p.PhoneNumber)
+            .Length(11).WithMessage(_messageService.GetMessage(MessageCodes.MESSAGE_INVALID_PHONE, Langs.FA));
+        RuleFor(p => p.PhoneNumber)
+            .Must(p => p.StartsWith("09"))
+            .WithMessage(_messageService.GetMessage(MessageCodes.MESSAGE_INVALID_PHONE, Langs.FA));
+    }
+}
 public class RegisterCommand : IRequest<RegisterVm>
 {
     public string PhoneNumber { set; get; }
