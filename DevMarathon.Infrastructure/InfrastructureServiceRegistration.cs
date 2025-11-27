@@ -34,6 +34,9 @@ public static class InfrastructureServiceRegistration
         services.AddScoped(typeof(ILogService), typeof(LogService));
         services.AddScoped(typeof(ICachingService), typeof(CachingService));
         services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+        services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageRepository));
+        services.AddScoped(typeof(IChatRoomRepository), typeof(ChatRoomRepository));
+        services.AddScoped(typeof(ISocketService), typeof(SocketService));
         services.AddTransient<IFileService>(s => new FileService(configs));
         services.AddTransient<IImageService>(s => new ImageService(configs));
         services.AddScoped(typeof(UserContext));

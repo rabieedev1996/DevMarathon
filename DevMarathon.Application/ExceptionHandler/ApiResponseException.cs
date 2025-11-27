@@ -17,11 +17,11 @@ public class ApiResponseException : Exception
 
     public void SetDetail(ResponseCodes code)
     {
-        _responseObject = _responseGenerator.GetResponseModel<object>(code, new { });
+        _responseObject = _responseGenerator.GetHTTPResponseModel<object>(code, new { });
     }
     public void SetDetail<TModel>(ResponseCodes code, TModel Data)
     {
-        _responseObject = _responseGenerator.GetResponseModel<object>(code, Data);
+        _responseObject = _responseGenerator.GetHTTPResponseModel<object>(code, Data);
     }
 
     public ObjectResult ResponseObject

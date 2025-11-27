@@ -12,7 +12,9 @@ public class UserConfiguration: IEntityTypeConfiguration<UserEntity>
         builder.Property(x => x.PhoneNumber)
             .IsRequired()
             .HasColumnName("phone_number")
-            .IsRequired()
             .HasMaxLength(11);
+        builder.Property(x => x.Verified)
+            .IsRequired()
+            .HasColumnName("verified");
     }
 }

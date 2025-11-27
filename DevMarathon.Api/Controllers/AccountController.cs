@@ -30,7 +30,7 @@ namespace DevMarathon.Api.Controllers
         public async Task<IActionResult> Register(RegisterCommand command)
         {
             var resultData = await _mediator.Send(command);
-            var resultObj = _rsponseGenerator.GetResponseModel(ResponseCodes.SUCCESS, resultData);
+            var resultObj = _rsponseGenerator.GetHTTPResponseModel(ResponseCodes.SUCCESS, resultData);
             return resultObj;
         }
        
@@ -39,7 +39,7 @@ namespace DevMarathon.Api.Controllers
         public async Task<IActionResult> Verify(VerifyCommand command)
         {
             var resultData = await _mediator.Send(command);
-            var resultObj = _rsponseGenerator.GetResponseModel(ResponseCodes.SUCCESS, resultData);
+            var resultObj = _rsponseGenerator.GetHTTPResponseModel(ResponseCodes.SUCCESS, resultData);
             return resultObj;
         }
 

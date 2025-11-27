@@ -16,20 +16,32 @@ public class ResponseGenerator
         _messageService = messageService;
     }
 
-    public ObjectResult GetResponseModel<TData>(ResponseCodes code,Langs lang=Langs.FA)
+    public ObjectResult GetHTTPResponseModel<TData>(ResponseCodes code,Langs lang=Langs.FA)
+    {
+        return ResponseBuilder.Create(code).FillStatusCode().FillSuccessStatus()
+            .FillMessage(_messageService,lang)
+            .BuildHttpResult<TData>();
+    }
+
+    public ObjectResult GetHTTPResponseModel<TData>(ResponseCodes code, TData data, Langs lang=Langs.FA)
+    {
+        return ResponseBuilder.Create(code).FillStatusCode().FillSuccessStatus()
+            .FillMessage(_messageService,lang)
+            .BuildHttpResult(data);
+    }
+    public ApiResponseModel<TData> GetResponseModel<TData>(ResponseCodes code,Langs lang=Langs.FA)
     {
         return ResponseBuilder.Create(code).FillStatusCode().FillSuccessStatus()
             .FillMessage(_messageService,lang)
             .Build<TData>();
     }
 
-    public ObjectResult GetResponseModel<TData>(ResponseCodes code, TData data, Langs lang=Langs.FA)
+    public ApiResponseModel<TData> GetResponseModel<TData>(ResponseCodes code, TData data, Langs lang=Langs.FA)
     {
         return ResponseBuilder.Create(code).FillStatusCode().FillSuccessStatus()
             .FillMessage(_messageService,lang)
             .Build(data);
     }
-
 
     class ResponseBuilder
     {
@@ -40,8 +52,10 @@ public class ResponseGenerator
 
         public interface IBuildResponse
         {
-            ObjectResult Build<TData>(TData data);
-            ObjectResult Build<TData>();
+            ObjectResult BuildHttpResult<TData>(TData data);
+            ObjectResult BuildHttpResult<TData>();
+            ApiResponseModel<TData> Build<TData>(TData data);
+            ApiResponseModel<TData> Build<TData>();
         }
 
         public interface IFillStatusCode
@@ -72,7 +86,7 @@ public class ResponseGenerator
             private string _message;
             private bool _isSuccess;
 
-            public ObjectResult Build<TData>(TData data)
+            public ObjectResult BuildHttpResult<TData>(TData data)
             {
                 var body = new ApiResponseModel<TData>()
                 {
@@ -87,7 +101,7 @@ public class ResponseGenerator
                 };
             }
 
-            public ObjectResult Build<TData>()
+            public ObjectResult BuildHttpResult<TData>()
             {
                 var body = new ApiResponseModel<TData>()
                 {
@@ -98,6 +112,28 @@ public class ResponseGenerator
                 {
                     StatusCode = _statusCode
                 };
+            }
+
+            public ApiResponseModel<TData> Build<TData>(TData data)
+            {
+                var body = new ApiResponseModel<TData>()
+                {
+                    Data = data,
+                    Message = _message,
+                    ResultCode = _responseCode.ToString()
+                };
+                return body;
+            }
+
+            public ApiResponseModel<TData> Build<TData>()
+            {
+                
+                var body = new ApiResponseModel<TData>()
+                {
+                    Message = _message,
+                    ResultCode = _responseCode.ToString()
+                };
+                return body;
             }
 
             public IFillMessage FillSuccessStatus()
