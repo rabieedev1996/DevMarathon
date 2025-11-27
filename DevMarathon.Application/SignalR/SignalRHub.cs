@@ -1,5 +1,7 @@
 using DevMarathon.Application;
 using DevMarathon.Application.Features.Chat;
+using DevMarathon.Application.Features.Chat.Commands;
+using DevMarathon.Application.Features.Chat.Queries;
 using DevMarathon.Application.Models;
 using DevMarathon.Domain;
 using DevMarathon.Identity;
@@ -36,7 +38,20 @@ public class SignalRHub : Hub
         catch (Exception ex) {
         }
     }
-
+    public async Task GetMessages(string callBackAction)
+    {
+        var connection = _Connections.FirstOrDefault(a => a.ConnectionId == Context.ConnectionId);
+        try
+        {
+            _userContext.DeviceId = connection.DeviceId;
+            _userContext.UserId = connection.UserId;
+            var resultData = await _Mediator.Send(new GetChatRoomMessagesQuery());
+            
+            await Clients.Client(connection.ConnectionId).SendAsync(callBackAction,resultData); 
+        }
+        catch (Exception ex) {
+        }
+    }
     
     
     public override Task OnConnectedAsync()

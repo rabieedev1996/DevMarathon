@@ -11,4 +11,8 @@ public class ChatMessageRepository : BaseRepository<ChatMessageEntity>, IChatMes
     {
     }
 
+    public List<ChatMessageEntity> GetByRoom(Guid roomId)
+    {
+        return GetDBSetQuery().Where(a=>a.RoomId == roomId).OrderByDescending(a=>a.CreatedAt).ToList();
+    }
 }

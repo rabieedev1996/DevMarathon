@@ -12,5 +12,8 @@ public class ChatMessageConfiguration: IEntityTypeConfiguration<ChatMessageEntit
         builder.HasKey(p => p.Id);
         builder.Property(x => x.Message)
             .HasColumnName("message");
+        builder.Property(x => x.FromSystem)
+            .HasDefaultValue(false)
+            .HasColumnName("from_system");
     }
 }

@@ -5,9 +5,10 @@ using DevMarathon.Application.Contract.SQLDB;
 using DevMarathon.Application.ExceptionHandler;
 using DevMarathon.Domain.Entities.SQL;
 using DevMarathon.Domain.Enums;
+using DevMarathon.Utility;
 using MediatR;
 
-namespace DevMarathon.Application.Features.Chat;
+namespace DevMarathon.Application.Features.Chat.Commands;
 
 public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageCommand, ReceiveMessageCommandVM>
 {
@@ -53,6 +54,7 @@ public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageComman
         await _chatMessageRepository.AddAsync(chatMessage);
         var socketModel = new ReceiveMessageCommand_SocketModel
         {
+            Date = DateTime.Now.ToFa("yyyy-MM-dd HH:mm:ss"),
             FromSystem = false,
             Message = request.Message,
         };
@@ -68,7 +70,8 @@ public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageComman
         await _chatMessageRepository.AddAsync(answerMessage);
         var answerSocketModel = new ReceiveMessageCommand_SocketModel
         {
-            FromSystem = false,
+            Date = DateTime.Now.ToFa("yyyy-MM-dd HH:mm:ss"),
+            FromSystem = true,
             Message = answerMessage.Message,
         };
         await _socketService.PushToClient(connections.ConnectionId, "NEW_MESSAGE", answerSocketModel);
@@ -88,6 +91,7 @@ public class ReceiveMessageCommandVM
 
 public class ReceiveMessageCommand_SocketModel
 {
-    public string Message { set; get; }
-    public bool FromSystem { set; get; }
+    public string Message { get; set; }
+    public bool FromSystem { get; set; }
+    public string Date { set; get; }
 }

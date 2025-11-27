@@ -6,4 +6,5 @@ namespace DevMarathon.Application.Contract.SQLDB;
 
 public interface IChatMessageRepository : IBaseRepository<ChatMessageEntity>
 {
+    List<ChatMessageEntity> GetByRoom(Guid roomId);  
 }
