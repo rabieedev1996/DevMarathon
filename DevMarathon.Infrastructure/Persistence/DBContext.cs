@@ -13,6 +13,8 @@ public class CleanContext:DbContext
 {
     public CleanContext(DbContextOptions<CleanContext> options):base(options) {  }
     public DbSet<UserEntity> Users { get; set; }
+    public DbSet<ChatRoomEntity> ChatRoom { get; set; }
+    public DbSet<ChatMessageEntity> ChatMessage { get; set; }
     
     
 
@@ -40,5 +42,7 @@ public class CleanContext:DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new ChatRoomConfiguration());
+        modelBuilder.ApplyConfiguration(new ChatMessageConfiguration());
     }
 }

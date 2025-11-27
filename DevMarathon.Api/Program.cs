@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DevMarathon.Api.SignalR;
 using DevMarathon.Infrastructure;
+using Microsoft.AspNetCore.Http.Connections;
 using Scalar.AspNetCore;
 using Microsoft.OpenApi.Models;
 
@@ -97,6 +99,14 @@ builder.Services.AddOpenApi(options =>
     });
 });
 
+builder.Services.AddSignalR(o =>
+{
+    o.EnableDetailedErrors = true;
+    o.MaximumReceiveMessageSize = 102400000;
+}).AddJsonProtocol(options => {
+    options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+});
+
 var app = builder.Build();
 app.MapControllers();
 
@@ -109,6 +119,15 @@ app.MapOpenApi();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<SignalRHub>("/ChatHub", option =>
+    {
+        option.Transports = HttpTransportType.WebSockets |
+                            HttpTransportType.LongPolling
+            ;
+    });
+});
 
 app.Run();

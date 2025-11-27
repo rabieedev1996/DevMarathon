@@ -51,7 +51,7 @@ namespace DevMarathon.Api.Filters
                     _loggingService.InsertApiException(rdcontroller, rdaction, guid, UserId, context.Exception);
                 }
 
-                context.Result = _responseGenerator.GetResponseModel<object>(ResponseCodes.EXCEPTION);
+                context.Result = _responseGenerator.GetHTTPResponseModel<object>(ResponseCodes.EXCEPTION);
             }
 
             context.ExceptionHandled = true;

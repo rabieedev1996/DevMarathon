@@ -29,7 +29,7 @@ namespace DevMarathon.Api.Controllers
         public async Task<IActionResult> SampleService(SampleServiceInput input)
         {
             var resultData = await _mediator.Send(input);
-            var resultObj = _rsponseGenerator.GetResponseModel(ResponseCodes.SUCCESS, resultData);
+            var resultObj = _rsponseGenerator.GetHTTPResponseModel(ResponseCodes.SUCCESS, resultData);
             return resultObj;
         }
         [HttpPost("/GenerateToken")]
@@ -37,7 +37,7 @@ namespace DevMarathon.Api.Controllers
         public async Task<IActionResult> GenerateToken()
         {
             var resultData = await _mediator.Send(new GenerateSampleTokenInput { });
-            var resultObj = _rsponseGenerator.GetResponseModel(ResponseCodes.SUCCESS, resultData);
+            var resultObj = _rsponseGenerator.GetHTTPResponseModel(ResponseCodes.SUCCESS, resultData);
             return resultObj;
         }
         [HttpPost("/ValidateToken")]
@@ -46,7 +46,7 @@ namespace DevMarathon.Api.Controllers
         public async Task<IActionResult> ValidateToken()
         {
             var resultData = await _mediator.Send(new ValidateTokenInput { });
-            var resultObj = _rsponseGenerator.GetResponseModel(ResponseCodes.SUCCESS, resultData);
+            var resultObj = _rsponseGenerator.GetHTTPResponseModel(ResponseCodes.SUCCESS, resultData);
             return resultObj;
         }
 
