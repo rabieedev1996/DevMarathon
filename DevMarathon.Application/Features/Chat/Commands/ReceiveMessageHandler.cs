@@ -60,7 +60,7 @@ public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageComman
         };
         await _socketService.PushToClient(connections.ConnectionId, "NEW_MESSAGE", socketModel);
 
-        
+          
         
         var answerMessage = new ChatMessageEntity()
         {
