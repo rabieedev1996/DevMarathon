@@ -44,8 +44,7 @@ public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageComman
             await _chatRoomRepository.AddAsync(chatRoom);
         }
 
-        var connections = SignalRHub._Connections.FirstOrDefault(a => a.UserId == _userContext.UserId
-                                                                      && a.DeviceId == _userContext.DeviceId);
+        var connections = SignalRHub._Connections.Where(a => a.UserId == _userContext.UserId).ToList();
         var chatMessage = new ChatMessageEntity()
         {
             RoomId = chatRoom.Id,
@@ -58,7 +57,7 @@ public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageComman
             FromSystem = false,
             Message = request.Message,
         };
-        await _socketService.PushToClient(connections.ConnectionId, "NEW_MESSAGE", socketModel);
+        await _socketService.PushToClient(connections.Select(a=>a.ConnectionId.ToString()).ToList(), "NEW_MESSAGE", socketModel);
 
         
         
@@ -74,7 +73,7 @@ public class ReceiveMessageCommandHandler : IRequestHandler<ReceiveMessageComman
             FromSystem = true,
             Message = answerMessage.Message,
         };
-        await _socketService.PushToClient(connections.ConnectionId, "NEW_MESSAGE", answerSocketModel);
+        await _socketService.PushToClient(connections.Select(a=>a.ConnectionId).ToList(), "NEW_MESSAGE", answerSocketModel);
 
         return new ReceiveMessageCommandVM();
     }
