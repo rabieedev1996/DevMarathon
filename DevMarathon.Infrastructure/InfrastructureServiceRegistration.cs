@@ -37,6 +37,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped(typeof(IChatMessageRepository), typeof(ChatMessageRepository));
         services.AddScoped(typeof(IChatRoomRepository), typeof(ChatRoomRepository));
         services.AddScoped(typeof(ISocketService), typeof(SocketService));
+        services.AddScoped(typeof(IAIService), typeof(AIService));
         services.AddTransient<IFileService>(s => new FileService(configs));
         services.AddTransient<IImageService>(s => new ImageService(configs));
         services.AddScoped(typeof(UserContext));
@@ -46,7 +47,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped(typeof(IMessageService), typeof(MessageService));
         services.AddScoped(typeof(En_MessagesImpl));
         services.AddScoped(typeof(Fa_MessagesImpl));
-
+        
 
         return services;
     }
