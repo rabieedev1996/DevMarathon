@@ -14,6 +14,7 @@ public class Configs
     public string MailZilaToken { get; set; }
     public OSTYPE OSTYPE { get; set; }
     public TokenConfigs TokenConfigs { get; set; }
+    public AIServiceConfigs AIServiceConfigs { get; set; }
 }
 
 public class SQlConfigs
@@ -76,4 +77,8 @@ public class TokenConfigs
     public string Issuer { set; get; }
     public string Audience { set; get; }
     public string SecurityAlgorithm { set; get; }
+}
+public class AIServiceConfigs
+{
+    public string Endpoint { get; set; }
 }
